@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Undangan Pernikahan – Rizky & Ayu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&family=Great+Vibes&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ivory:#FAF7F2; --cream:#F3EDE3; --gold:#B8965A;
+  --gold-light:#D4B483; --gold-pale:#F0E6D0;
+  --dark:#2C2416; --mid:#6B5B3E; --muted:#9C8B6E; --rose:#C9897A;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Jost',sans-serif;background:var(--ivory);color:var(--dark);overflow-x:hidden;cursor:none;}
+
+/* CURSOR */
+.cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;}
+.cursor-ring{position:fixed;width:32px;height:32px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .12s ease;opacity:.6;}
+
+/* HEARTS CANVAS */
+#heartsCanvas{position:fixed;inset:0;pointer-events:none;z-index:5;}
+
+/* CLICK BURST */
+.heart-burst{position:fixed;pointer-events:none;z-index:700;transform:translate(-50%,-50%);animation:burstUp .9s ease forwards;}
+@keyframes burstUp{0%{opacity:1;transform:translate(-50%,-50%) scale(.5);}50%{opacity:1;transform:translate(-50%,-130%) scale(1.3);}100%{opacity:0;transform:translate(-50%,-220%) scale(.9);}}
+
+/* YT HIDDEN */
+#ytFrame{position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;pointer-events:none;z-index:-1;}
+
+/* MUSIC BTN */
+.music-btn{position:fixed;bottom:1.5rem;right:1.5rem;z-index:500;width:52px;height:52px;border-radius:50%;background:var(--dark);border:1.5px solid var(--gold);color:var(--gold);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;box-shadow:0 4px 24px rgba(0,0,0,.35);}
+.music-btn:hover{background:var(--gold);color:var(--dark);}
+.music-btn svg{width:20px;height:20px;}
+.music-waves{position:fixed;bottom:2.3rem;right:4.8rem;display:flex;align-items:flex-end;gap:3px;z-index:499;opacity:0;transition:opacity .3s;}
+.music-waves.on{opacity:1;}
+.music-waves span{display:block;width:3px;background:var(--gold);border-radius:2px;animation:wave 1.2s ease-in-out infinite;}
+.music-waves span:nth-child(1){height:8px;animation-delay:0s;}
+.music-waves span:nth-child(2){height:14px;animation-delay:.2s;}
+.music-waves span:nth-child(3){height:10px;animation-delay:.4s;}
+.music-waves span:nth-child(4){height:16px;animation-delay:.1s;}
+.music-waves span:nth-child(5){height:8px;animation-delay:.3s;}
+@keyframes wave{0%,100%{transform:scaleY(1);}50%{transform:scaleY(.4);}}
+
+/* LOVE TOGGLE */
+.love-toggle{position:fixed;bottom:1.5rem;left:1.5rem;z-index:500;width:52px;height:52px;border-radius:50%;background:var(--dark);border:1.5px solid var(--rose);color:var(--rose);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .3s;box-shadow:0 4px 24px rgba(0,0,0,.35);}
+.love-toggle.on{background:var(--rose);color:#fff;}
+
+/* COVER */
+#cover{position:fixed;inset:0;z-index:800;background:var(--dark);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.8rem;transition:opacity 1.2s,visibility 1.2s;overflow:hidden;}
+#cover.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+.cover-float{animation:floatY 4s ease-in-out infinite;}
+@keyframes floatY{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.cover-label{font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-light);}
+.cover-names{font-family:'Great Vibes',cursive;font-size:clamp(3rem,10vw,5.5rem);color:#fff;text-align:center;line-height:1.1;}
+.cover-hr{width:1px;height:40px;background:var(--gold);opacity:.35;}
+.cover-sub{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
+.open-btn{padding:.9rem 2.8rem;background:transparent;border:1px solid var(--gold);color:var(--gold-light);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;border-radius:100px;transition:all .3s;}
+.open-btn:hover{background:var(--gold);color:var(--dark);}
+.cover-heart{position:absolute;pointer-events:none;opacity:.09;animation:chFloat linear infinite;}
+@keyframes chFloat{0%{transform:translateY(110vh) rotate(0);}100%{transform:translateY(-10vh) rotate(360deg);}}
+
+/* SECTIONS */
+main{min-height:100vh;}
+section{padding:6rem 1.5rem;position:relative;}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:var(--dark);overflow:hidden;position:relative;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(184,150,90,.09) 0%,transparent 70%);}
+.hero-lines{position:absolute;inset:0;background-image:linear-gradient(0deg,rgba(184,150,90,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(184,150,90,.04) 1px,transparent 1px);background-size:60px 60px;}
+.hero-corner{position:absolute;opacity:.18;}
+.hero-corner.tl{top:2rem;left:2rem;}.hero-corner.tr{top:2rem;right:2rem;transform:scaleX(-1);}
+.hero-corner.bl{bottom:2rem;left:2rem;transform:scaleY(-1);}.hero-corner.br{bottom:2rem;right:2rem;transform:scale(-1);}
+.hero-inner{position:relative;z-index:2;}
+.hero-eyebrow{font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;opacity:0;animation:fadeUp .8s ease .4s forwards;}
+.hero-script{font-family:'Great Vibes',cursive;font-size:clamp(1.4rem,4vw,2rem);color:var(--gold-light);margin-bottom:.5rem;opacity:0;animation:fadeUp .8s ease .6s forwards;}
+.hero-names{font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,10vw,7rem);font-weight:300;color:#fff;line-height:1;letter-spacing:-.02em;opacity:0;animation:fadeUp .9s ease .8s forwards;}
+.hero-amp{font-family:'Great Vibes',cursive;font-size:clamp(2.5rem,8vw,5.5rem);color:var(--gold);display:block;line-height:1.2;}
+.hero-date{margin-top:2rem;font-size:.82rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);opacity:0;animation:fadeUp .8s ease 1s forwards;}
+.hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--muted);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;animation:fadeUp 1s ease 1.5s both;}
+.scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--gold),transparent);animation:sp 2s ease-in-out infinite;}
+@keyframes sp{0%,100%{opacity:.6;}50%{opacity:1;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(25px);}to{opacity:1;transform:translateY(0);}}
+
+/* BISMILLAH */
+#bismillah{background:var(--cream);text-align:center;padding:5rem 1.5rem;}
+.bis-arabic{font-size:clamp(1.8rem,5vw,2.8rem);color:var(--gold);margin-bottom:1.5rem;line-height:1.8;font-family:'Cormorant Garamond',serif;font-style:italic;}
+.bis-text{font-size:.9rem;color:var(--mid);font-style:italic;max-width:480px;margin:0 auto;line-height:1.9;font-family:'Cormorant Garamond',serif;}
+
+/* DIVIDER */
+.orn-divider{text-align:center;padding:1rem 0;display:flex;align-items:center;justify-content:center;gap:1rem;}
+.orn-divider::before,.orn-divider::after{content:'';flex:1;max-width:120px;height:1px;background:linear-gradient(to right,transparent,var(--gold-pale));}
+.orn-divider::after{background:linear-gradient(to left,transparent,var(--gold-pale));}
+.orn-icon{color:var(--gold);font-size:1.2rem;}
+
+/* COUPLE */
+#couple{background:var(--ivory);text-align:center;}
+.couple-wrap{max-width:700px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:2rem;}
+.person-card{display:flex;flex-direction:column;align-items:center;gap:1rem;}
+.person-photo{width:150px;height:150px;border-radius:50%;overflow:hidden;border:3px solid var(--gold-pale);box-shadow:0 0 0 6px var(--cream),0 0 0 7px var(--gold-pale),0 8px 30px rgba(0,0,0,.15);transition:transform .3s;}
+.person-photo:hover{transform:scale(1.04);}
+.person-photo img{width:100%;height:100%;object-fit:cover;object-position:top center;}
+.person-script{font-family:'Great Vibes',cursive;font-size:2rem;color:var(--gold);line-height:1;}
+.person-full{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:500;color:var(--dark);letter-spacing:.05em;}
+.person-parents{font-size:.78rem;color:var(--muted);font-style:italic;line-height:1.7;font-family:'Cormorant Garamond',serif;}
+.couple-amp{font-family:'Great Vibes',cursive;font-size:4rem;color:var(--gold);opacity:.5;}
+
+/* GALLERY */
+#story{background:var(--ivory);text-align:center;}
+.story-intro{max-width:520px;margin:0 auto 3.5rem;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--mid);line-height:1.9;}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;max-width:680px;margin:0 auto;}
+.gi{border-radius:6px;overflow:hidden;border:1px solid var(--gold-pale);position:relative;transition:transform .3s;background:var(--cream);}
+.gi:hover{transform:scale(1.02);z-index:2;}
+.gi img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
+.gi:hover img{transform:scale(1.06);}
+.gi:nth-child(1){aspect-ratio:1;}.gi:nth-child(2){aspect-ratio:.7;grid-row:span 2;}.gi:nth-child(3){aspect-ratio:1;}
+.gi:nth-child(4){aspect-ratio:1;}.gi:nth-child(5){aspect-ratio:.7;grid-row:span 2;}.gi:nth-child(6){aspect-ratio:1;}
+.go{position:absolute;inset:0;background:linear-gradient(to top,rgba(44,36,22,.4),transparent);opacity:0;transition:opacity .3s;display:flex;align-items:flex-end;padding:.8rem;}
+.gi:hover .go{opacity:1;}
+.gc{font-family:'Great Vibes',cursive;font-size:1.1rem;color:#fff;}
+
+/* EVENT */
+#event{background:var(--dark);text-align:center;overflow:hidden;position:relative;}
+.event-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(184,150,90,.07) 0%,transparent 70%);}
+.sec-tag{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;display:block;}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:300;letter-spacing:-.01em;line-height:1.2;margin-bottom:3rem;}
+.event-cards{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;max-width:700px;margin:0 auto;}
+.ec{flex:1;min-width:260px;border:1px solid rgba(184,150,90,.25);border-radius:4px;padding:2.5rem 2rem;background:rgba(255,255,255,.03);backdrop-filter:blur(8px);position:relative;}
+.ec::before{content:'';position:absolute;top:-1px;left:2rem;right:2rem;height:2px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
+.ec-type{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;}
+.ec-name{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:#fff;margin-bottom:1.5rem;}
+.ec-detail{font-size:.82rem;color:rgba(255,255,255,.5);letter-spacing:.05em;line-height:2;}
+.ec-detail strong{color:rgba(255,255,255,.8);font-weight:400;}
+.ec .icon{font-size:1.5rem;margin-bottom:1rem;display:block;}
+
+/* COUNTDOWN */
+#countdown{background:var(--cream);text-align:center;padding:5rem 1.5rem;}
+.cd-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,4vw,2.2rem);font-style:italic;color:var(--mid);margin-bottom:2.5rem;}
+.cd-grid{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;max-width:480px;margin:0 auto;}
+.cd-box{min-width:90px;border:1px solid var(--gold-pale);border-radius:6px;padding:1.2rem .8rem;background:var(--ivory);}
+.cd-num{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--gold);line-height:1;display:block;}
+.cd-lbl{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:.4rem;display:block;}
+
+/* VENUE */
+#venue{background:var(--dark);text-align:center;}
+.venue-addr{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;color:rgba(255,255,255,.6);line-height:1.9;margin-bottom:2rem;}
+.map-frame{width:100%;max-width:600px;height:280px;border-radius:8px;overflow:hidden;border:1px solid rgba(184,150,90,.2);margin:0 auto 2rem;}
+.maps-btn{display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 2rem;border:1px solid var(--gold);color:var(--gold);font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;border-radius:100px;transition:all .3s;}
+.maps-btn:hover{background:var(--gold);color:var(--dark);}
+
+/* RSVP */
+#rsvp{background:var(--cream);text-align:center;}
+.rsvp-form{max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:1rem;}
+.fg{display:flex;flex-direction:column;gap:.4rem;text-align:left;}
+.fg label{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.fg input,.fg select,.fg textarea{padding:.85rem 1.1rem;background:var(--ivory);border:1px solid var(--gold-pale);border-radius:4px;font-family:'Jost',sans-serif;font-size:.9rem;color:var(--dark);outline:none;transition:border .2s;resize:none;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold);}
+.sub-btn{margin-top:.5rem;padding:1rem 2rem;background:var(--dark);color:var(--gold-light);border:1.5px solid var(--gold);font-family:'Jost',sans-serif;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;border-radius:100px;transition:all .3s;}
+.sub-btn:hover{background:var(--gold);color:var(--dark);}
+.rsvp-ok{display:none;padding:1.5rem;background:var(--ivory);border:1px solid var(--gold-pale);border-radius:8px;font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-style:italic;color:var(--mid);}
+
+/* WISHES */
+#wishes{background:var(--ivory);text-align:center;}
+.wishes-list{max-width:600px;margin:0 auto 2rem;display:flex;flex-direction:column;gap:1rem;max-height:340px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--gold-pale) transparent;}
+.wish-card{background:var(--cream);border:1px solid var(--gold-pale);border-radius:8px;padding:1.2rem 1.4rem;text-align:left;}
+.w-name{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem;}
+.w-msg{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--mid);font-size:1rem;line-height:1.7;}
+.wish-form{max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:.8rem;}
+.wi{padding:.85rem 1.1rem;background:var(--ivory);border:1px solid var(--gold-pale);border-radius:4px;font-family:'Jost',sans-serif;font-size:.9rem;color:var(--dark);outline:none;transition:border .2s;resize:none;}
+.wi:focus{border-color:var(--gold);}
+.w-sub{padding:.85rem;background:transparent;border:1px solid var(--gold);color:var(--gold);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;border-radius:100px;transition:all .3s;}
+.w-sub:hover{background:var(--gold);color:var(--dark);}
+
+/* CLOSING */
+#closing{background:var(--dark);text-align:center;padding:7rem 1.5rem;position:relative;overflow:hidden;}
+.cl-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(184,150,90,.1) 0%,transparent 70%);}
+.cl-script{font-family:'Great Vibes',cursive;font-size:clamp(2.5rem,8vw,5rem);color:#fff;position:relative;z-index:1;margin-bottom:1rem;}
+.cl-sub{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:rgba(255,255,255,.4);position:relative;z-index:1;}
+.cl-date{margin-top:2rem;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);position:relative;z-index:1;}
+.ring-icon{font-size:2rem;margin-bottom:1rem;display:block;position:relative;z-index:1;}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* MOBILE */
+@media(max-width:600px){
+  .couple-wrap{grid-template-columns:1fr;gap:2rem;}
+  .couple-amp{font-size:3rem;}
+  .gallery{grid-template-columns:repeat(2,1fr);}
+  .gi:nth-child(2),.gi:nth-child(5){grid-row:auto;aspect-ratio:1;}
+  .event-cards{flex-direction:column;}
+  .cd-box{min-width:70px;}.cd-num{font-size:2.2rem;}
+  section{padding:4rem 1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<canvas id="heartsCanvas"></canvas>
+
+<!-- Hidden Audio Element -->
+<audio id="bgAudio" src="Ed Sheeran - Perfect.mp3" loop></audio>
+
+<button class="music-btn" id="musicBtn" title="Ed Sheeran - Perfect">
+  <svg id="pIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+  <svg id="pauseIcon" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6zm8-14v14h4V5z"/></svg>
+</button>
+<div class="music-waves" id="mWaves"><span></span><span></span><span></span><span></span><span></span></div>
+<button class="love-toggle on" id="loveBtn" title="Toggle Love">❤️</button>
+
+<!-- COVER -->
+<div id="cover">
+  <svg class="cover-float" width="160" height="100" viewBox="0 0 160 100" fill="none">
+    <circle cx="55" cy="50" r="38" stroke="#B8965A" stroke-width="1" fill="none" opacity=".7"/>
+    <circle cx="105" cy="50" r="38" stroke="#B8965A" stroke-width="1" fill="none" opacity=".7"/>
+    <circle cx="55" cy="50" r="28" stroke="#B8965A" stroke-width=".4" fill="rgba(184,150,90,.04)" opacity=".5"/>
+    <circle cx="105" cy="50" r="28" stroke="#B8965A" stroke-width=".4" fill="rgba(184,150,90,.04)" opacity=".5"/>
+  </svg>
+  <p class="cover-label">Undangan Pernikahan</p>
+  <div class="cover-names">Rizky<br>& Ayu</div>
+  <div class="cover-hr"></div>
+  <p class="cover-sub">Sabtu, 14 Juni 2025</p>
+  <button class="open-btn" onclick="openInv()">✦ Buka Undangan ✦</button>
+</div>
+
+<!-- MAIN -->
+<main id="mainContent" style="display:none">
+
+<section id="hero">
+  <div class="hero-bg"></div><div class="hero-lines"></div>
+  <svg class="hero-corner tl" width="70" height="70" viewBox="0 0 70 70" fill="none"><path d="M5 5 L5 30 M5 5 L30 5" stroke="#B8965A" stroke-width=".8" opacity=".6"/><circle cx="5" cy="5" r="2" fill="#B8965A" opacity=".5"/></svg>
+  <svg class="hero-corner tr" width="70" height="70" viewBox="0 0 70 70" fill="none"><path d="M5 5 L5 30 M5 5 L30 5" stroke="#B8965A" stroke-width=".8" opacity=".6"/><circle cx="5" cy="5" r="2" fill="#B8965A" opacity=".5"/></svg>
+  <svg class="hero-corner bl" width="70" height="70" viewBox="0 0 70 70" fill="none"><path d="M5 5 L5 30 M5 5 L30 5" stroke="#B8965A" stroke-width=".8" opacity=".6"/><circle cx="5" cy="5" r="2" fill="#B8965A" opacity=".5"/></svg>
+  <svg class="hero-corner br" width="70" height="70" viewBox="0 0 70 70" fill="none"><path d="M5 5 L5 30 M5 5 L30 5" stroke="#B8965A" stroke-width=".8" opacity=".6"/><circle cx="5" cy="5" r="2" fill="#B8965A" opacity=".5"/></svg>
+  <div class="hero-inner">
+    <p class="hero-eyebrow">The Wedding of</p>
+    <div class="hero-script">bersama selamanya</div>
+    <h1 class="hero-names">Rizky<span class="hero-amp">&</span>Ayu</h1>
+    <p class="hero-date">Sabtu &nbsp;·&nbsp; 14 Juni 2025 &nbsp;·&nbsp; Medan, Sumatera Utara</p>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div><span>Scroll</span></div>
+</section>
+
+<section id="bismillah">
+  <div class="reveal">
+    <p class="bis-arabic">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+    <p class="bis-text">"Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu isteri-isteri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya di antaramu rasa kasih dan sayang."<br><br><em style="color:var(--gold);font-size:.82rem;">— QS. Ar-Rum: 21</em></p>
+  </div>
+</section>
+
+<div class="orn-divider"><span class="orn-icon">✦</span></div>
+
+<section id="couple">
+  <div class="reveal" style="margin-bottom:3rem">
+    <span class="sec-tag" style="color:var(--gold)">Mempelai</span>
+    <h2 class="sec-title" style="color:var(--dark)">Dua hati,<br>satu tujuan.</h2>
+  </div>
+  <div class="couple-wrap reveal">
+    <div class="person-card">
+      <div class="person-photo">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=faces&auto=format&q=80" alt="Rizky"/>
+      </div>
+      <div class="person-script">Rizky</div>
+      <div class="person-full">RIZKY ANANDA PUTRA</div>
+      <div class="person-parents">Putra dari Bapak Ahmad Fauzi<br>& Ibu Siti Rahayu</div>
+    </div>
+    <div class="couple-amp">&</div>
+    <div class="person-card">
+      <div class="person-photo">
+        <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=300&h=300&fit=crop&crop=faces&auto=format&q=80" alt="Ayu"/>
+      </div>
+      <div class="person-script">Ayu</div>
+      <div class="person-full">AYU LESTARI DEWI</div>
+      <div class="person-parents">Putri dari Bapak Budi Santoso<br>& Ibu Ratna Wulandari</div>
+    </div>
+  </div>
+</section>
+
+<div class="orn-divider"><span class="orn-icon">❋</span></div>
+
+<section id="event">
+  <div class="event-bg"></div>
+  <div class="reveal" style="position:relative;z-index:1">
+    <span class="sec-tag">Rangkaian Acara</span>
+    <h2 class="sec-title" style="color:#fff">Turut mengundang<br>kehadiran Anda.</h2>
+    <div class="event-cards">
+      <div class="ec"><span class="icon">💍</span><div class="ec-type">Akad Nikah</div><div class="ec-name">Sacred Vows</div><div class="ec-detail"><strong>Sabtu, 14 Juni 2025</strong><br>08.00 – 10.00 WIB<br><br>Masjid Al-Ikhlas<br>Jl. Perjuangan No. 12<br>Medan, Sumatera Utara</div></div>
+      <div class="ec"><span class="icon">🌹</span><div class="ec-type">Resepsi</div><div class="ec-name">The Reception</div><div class="ec-detail"><strong>Sabtu, 14 Juni 2025</strong><br>11.00 – 14.00 WIB<br><br>Gedung Serbaguna Permata<br>Jl. Gatot Subroto No. 45<br>Medan, Sumatera Utara</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="countdown">
+  <div class="reveal">
+    <h2 class="cd-title">Menghitung hari menuju hari bahagia ✨</h2>
+    <div class="cd-grid">
+      <div class="cd-box"><span class="cd-num" id="cdD">00</span><span class="cd-lbl">Hari</span></div>
+      <div class="cd-box"><span class="cd-num" id="cdH">00</span><span class="cd-lbl">Jam</span></div>
+      <div class="cd-box"><span class="cd-num" id="cdM">00</span><span class="cd-lbl">Menit</span></div>
+      <div class="cd-box"><span class="cd-num" id="cdS">00</span><span class="cd-lbl">Detik</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="orn-divider"><span class="orn-icon">✦</span></div>
+
+<section id="story">
+  <div class="reveal" style="margin-bottom:2rem">
+    <span class="sec-tag" style="color:var(--gold)">Kisah Cinta</span>
+    <h2 class="sec-title" style="color:var(--dark)">Perjalanan<br>yang indah.</h2>
+  </div>
+  <p class="story-intro reveal">Dua jiwa yang dipertemukan dalam kesederhanaan, tumbuh bersama dalam kepercayaan, dan kini melangkah menuju babak baru yang penuh kasih sayang dan keberkahan.</p>
+  <div class="gallery reveal">
+    <div class="gi"><img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&h=400&fit=crop&auto=format&q=80" alt="Wedding"/><div class="go"><span class="gc">Awal Kisah</span></div></div>
+    <div class="gi"><img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=400&h=600&fit=crop&auto=format&q=80" alt="Couple"/><div class="go"><span class="gc">Bersama</span></div></div>
+    <div class="gi"><img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=400&h=400&fit=crop&auto=format&q=80" alt="Rings"/><div class="go"><span class="gc">Cinta</span></div></div>
+    <div class="gi"><img src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=400&h=400&fit=crop&auto=format&q=80" alt="Flowers"/><div class="go"><span class="gc">Kebersamaan</span></div></div>
+    <div class="gi"><img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=400&h=600&fit=crop&auto=format&q=80" alt="Wedding2"/><div class="go"><span class="gc">Selamanya</span></div></div>
+    <div class="gi"><img src="https://images.unsplash.com/photo-1529636798458-92182e662485?w=400&h=400&fit=crop&auto=format&q=80" alt="Bokeh"/><div class="go"><span class="gc">Bahagia</span></div></div>
+  </div>
+</section>
+
+<section id="venue">
+  <div class="reveal" style="position:relative;z-index:1">
+    <span class="sec-tag">Lokasi</span>
+    <h2 class="sec-title" style="color:#fff">Temukan<br>kami di sini.</h2>
+    <p class="venue-addr">Gedung Serbaguna Permata<br>Jl. Gatot Subroto No. 45, Medan<br>Sumatera Utara 20111</p>
+    <div class="map-frame">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127617.3099843!2d98.6148!3d3.5952!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30312f719f6a8795%3A0xdb4bb15e36a98e36!2sMedan!5e0!3m2!1sid!2sid!4v1700000000000" width="100%" height="100%" style="border:0;filter:grayscale(20%) sepia(10%)" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+    <a href="https://maps.google.com/?q=Medan,Sumatera+Utara" target="_blank" class="maps-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Buka di Google Maps
+    </a>
+  </div>
+</section>
+
+<section id="rsvp">
+  <div class="reveal">
+    <span class="sec-tag" style="color:var(--gold)">Konfirmasi Kehadiran</span>
+    <h2 class="sec-title" style="color:var(--dark);margin-bottom:2rem">Kehadiran Anda<br>adalah kebahagiaan kami.</h2>
+    <form class="rsvp-form" onsubmit="doRSVP(event)">
+      <div class="fg"><label>Nama Lengkap</label><input type="text" placeholder="Masukkan nama Anda" required/></div>
+      <div class="fg"><label>No. HP / WhatsApp</label><input type="tel" placeholder="08xx-xxxx-xxxx"/></div>
+      <div class="fg"><label>Jumlah Tamu</label><select><option>1 orang</option><option>2 orang</option><option>3 orang</option><option>4 orang</option></select></div>
+      <div class="fg"><label>Kehadiran</label><select><option>✓ Insya Allah Hadir</option><option>✗ Mohon Maaf, Tidak Hadir</option></select></div>
+      <button type="submit" class="sub-btn">Kirim Konfirmasi</button>
+    </form>
+    <div class="rsvp-ok" id="rsvpOk">🌸 Terima kasih! Kami sangat menantikan kehadiran Anda.</div>
+  </div>
+</section>
+
+<section id="wishes">
+  <div class="reveal">
+    <span class="sec-tag" style="color:var(--gold)">Ucapan & Doa</span>
+    <h2 class="sec-title" style="color:var(--dark);margin-bottom:2.5rem">Kata-kata<br>penuh cinta.</h2>
+    <div class="wishes-list" id="wList">
+      <div class="wish-card"><div class="w-name">Budi & Keluarga 🌸</div><div class="w-msg">Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Barakallahu lakuma wa baraka 'alaikuma!</div></div>
+      <div class="wish-card"><div class="w-name">Sari Indah 💐</div><div class="w-msg">Langgeng ya kak, semoga selalu bahagia dan dimuliakan Allah. Aamiin ya Rabb 🤍</div></div>
+      <div class="wish-card"><div class="w-name">Doni Pratama ✨</div><div class="w-msg">Selamat menempuh hidup baru! Semoga rumah tangganya selalu dipenuhi keberkahan.</div></div>
+    </div>
+    <div class="wish-form reveal" style="margin-top:2rem">
+      <input class="wi" type="text" id="wName" placeholder="Nama Anda" maxlength="50"/>
+      <textarea class="wi" id="wMsg" rows="3" placeholder="Tuliskan doa & ucapan terbaik Anda..." maxlength="200"></textarea>
+      <button class="w-sub" onclick="addWish()">Kirim Ucapan 🌸</button>
+    </div>
+  </div>
+</section>
+
+<section id="closing">
+  <div class="cl-bg"></div>
+  <div class="reveal">
+    <span class="ring-icon">💍</span>
+    <div class="cl-script">Rizky & Ayu</div>
+    <p class="cl-sub">Bersama merajut mimpi, mengarungi samudra kehidupan.</p>
+    <p class="cl-date">14 · 06 · 2025</p>
+    <div style="margin-top:3rem;font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.18);">♫ perfect &nbsp;·&nbsp; With love ✦ Terima kasih</div>
+  </div>
+</section>
+
+</main>
+
+<script>
+// ── CURSOR ──
+const curEl=document.getElementById('cursor'),ringEl=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;curEl.style.left=mx+'px';curEl.style.top=my+'px';});
+(function ar(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ringEl.style.left=rx+'px';ringEl.style.top=ry+'px';requestAnimationFrame(ar);})();
+
+// ── HEARTS CANVAS ──
+const cv=document.getElementById('heartsCanvas');
+const ctx=cv.getContext('2d');
+let heartsOn=true,hs=[];
+function rsz(){cv.width=innerWidth;cv.height=innerHeight;}
+rsz();addEventListener('resize',rsz);
+
+function hPath(x,y,s){
+  ctx.beginPath();ctx.moveTo(x,y);
+  ctx.bezierCurveTo(x,y-s*.4,x-s*.6,y-s*.9,x-s*.6,y-s*.45);
+  ctx.bezierCurveTo(x-s*.6,y-s*.95,x,y-s*.85,x,y-s*.5);
+  ctx.bezierCurveTo(x,y-s*.85,x+s*.6,y-s*.95,x+s*.6,y-s*.45);
+  ctx.bezierCurveTo(x+s*.6,y-s*.9,x,y-s*.4,x,y);
+  ctx.closePath();
+}
+function spawnH(){
+  hs.push({x:Math.random()*cv.width,y:cv.height+30,s:7+Math.random()*18,sp:.5+Math.random()*1.2,op:.1+Math.random()*.22,dx:(Math.random()-.5)*.55,rot:Math.random()*6.28,rs:(Math.random()-.5)*.022,hue:Math.random()>.5?355:340});
+}
+let stm=0;
+(function draw(){
+  ctx.clearRect(0,0,cv.width,cv.height);
+  if(heartsOn){stm++;if(stm%55===0)spawnH();if(hs.length<35&&Math.random()>.93)spawnH();}
+  hs=hs.filter(h=>h.y>-40);
+  for(const h of hs){
+    h.y-=h.sp;h.x+=h.dx;h.rot+=h.rs;
+    ctx.save();ctx.translate(h.x,h.y);ctx.rotate(h.rot);
+    ctx.globalAlpha=h.op;ctx.fillStyle=`hsl(${h.hue},72%,66%)`;
+    hPath(0,0,h.s);ctx.fill();ctx.restore();
+  }
+  requestAnimationFrame(draw);
+})();
+
+// ── CLICK BURST ──
+const burstEmoji=['❤️','🩷','💕','💗','💖','🌸','✨','💝'];
+document.addEventListener('click',e=>{
+  if(e.target.closest('#cover')||e.target.closest('.music-btn')||e.target.closest('.love-toggle')) return;
+  for(let i=0;i<7;i++){
+    setTimeout(()=>{
+      const el=document.createElement('div');
+      el.className='heart-burst';
+      el.textContent=burstEmoji[Math.floor(Math.random()*burstEmoji.length)];
+      el.style.cssText=`position:fixed;pointer-events:none;z-index:700;left:${e.clientX+(Math.random()-.5)*60}px;top:${e.clientY+(Math.random()-.5)*30}px;font-size:${.9+Math.random()*.9}rem;transform:translate(-50%,-50%);animation:burstUp .9s ease forwards;`;
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(),950);
+    },i*55);
+  }
+});
+if(!document.getElementById('burstStyle')){
+  const s=document.createElement('style');s.id='burstStyle';
+  s.textContent='@keyframes burstUp{0%{opacity:1;transform:translate(-50%,-50%) scale(.5);}50%{opacity:1;transform:translate(-50%,-130%) scale(1.3);}100%{opacity:0;transform:translate(-50%,-220%) scale(.9);}}';
+  document.head.appendChild(s);
+}
+
+// ── LOVE TOGGLE ──
+document.getElementById('loveBtn').addEventListener('click',function(){
+  heartsOn=!heartsOn;
+  this.classList.toggle('on',heartsOn);
+  this.textContent=heartsOn?'❤️':'🤍';
+  if(!heartsOn)hs=[];
+});
+
+// ── COVER BG HEARTS ──
+(function makeCH(){
+  const icons=['❤️','🩷','💕','💖','🌸'];
+  for(let i=0;i<18;i++){
+    const el=document.createElement('div');
+    el.className='cover-heart';
+    el.textContent=icons[Math.floor(Math.random()*icons.length)];
+    el.style.cssText=`position:absolute;left:${Math.random()*100}%;font-size:${.7+Math.random()*1.2}rem;animation-duration:${7+Math.random()*10}s;animation-delay:${Math.random()*8}s;`;
+    document.getElementById('cover').appendChild(el);
+  }
+})();
+
+// ── AUDIO — Ed Sheeran - Perfect ──
+const bgAudio=document.getElementById('bgAudio');
+let isPlaying=false;
+
+bgAudio.addEventListener('play', () => {
+  isPlaying = true;
+  document.getElementById('pIcon').style.display='none';
+  document.getElementById('pauseIcon').style.display='';
+  document.getElementById('mWaves').classList.add('on');
+});
+
+bgAudio.addEventListener('pause', () => {
+  isPlaying = false;
+  document.getElementById('pIcon').style.display='';
+  document.getElementById('pauseIcon').style.display='none';
+  document.getElementById('mWaves').classList.remove('on');
+});
+
+function toggleMusic(){
+  if(isPlaying){
+    bgAudio.pause();
+  } else {
+    bgAudio.play().catch(e=>console.log(e));
+  }
+}
+document.getElementById('musicBtn').addEventListener('click',toggleMusic);
+
+// ── OPEN INVITATION ──
+function openInv(){
+  bgAudio.play().catch(e=>console.log("Audio play blocked",e));
+  document.getElementById('cover').classList.add('hidden');
+  const main=document.getElementById('mainContent');
+  main.style.display='block';
+  setTimeout(()=>document.querySelectorAll('.reveal').forEach(el=>obs.observe(el)),400);
+  spawnPetals();
+}
+
+// ── PETALS ──
+function spawnPetals(){
+  const icons=['🌸','🌺','🌼','💮','🌹','💐'];
+  if(!document.getElementById('fallKf')){
+    const s=document.createElement('style');s.id='fallKf';
+    s.textContent='@keyframes fall{0%{opacity:.9;transform:translateY(0) rotate(0);}100%{opacity:0;transform:translateY(110vh) rotate(420deg);}}';
+    document.head.appendChild(s);
+  }
+  for(let i=0;i<24;i++){
+    setTimeout(()=>{
+      const p=document.createElement('div');
+      p.style.cssText=`position:fixed;top:-30px;pointer-events:none;z-index:600;left:${Math.random()*100}vw;font-size:${.8+Math.random()*.9}rem;animation:fall ${4+Math.random()*4}s linear forwards;`;
+      p.textContent=icons[Math.floor(Math.random()*icons.length)];
+      document.body.appendChild(p);
+      setTimeout(()=>p.remove(),9000);
+    },i*160);
+  }
+}
+
+// ── REVEAL ──
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+},{threshold:.1});
+
+// ── COUNTDOWN ──
+function tick(){
+  const d=new Date('2025-06-14T08:00:00')-new Date();
+  const p=n=>String(Math.max(0,n)).padStart(2,'0');
+  if(d<=0){['cdD','cdH','cdM','cdS'].forEach(id=>document.getElementById(id).textContent='00');return;}
+  document.getElementById('cdD').textContent=p(Math.floor(d/864e5));
+  document.getElementById('cdH').textContent=p(Math.floor(d%864e5/36e5));
+  document.getElementById('cdM').textContent=p(Math.floor(d%36e5/6e4));
+  document.getElementById('cdS').textContent=p(Math.floor(d%6e4/1e3));
+}
+setInterval(tick,1000);tick();
+
+// ── RSVP ──
+function doRSVP(e){e.preventDefault();e.target.style.display='none';document.getElementById('rsvpOk').style.display='block';}
+
+// ── WISHES ──
+function addWish(){
+  const n=document.getElementById('wName').value.trim();
+  const m=document.getElementById('wMsg').value.trim();
+  if(!n||!m)return;
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const c=document.createElement('div');c.className='wish-card';
+  c.innerHTML=`<div class="w-name">${esc(n)} 💌</div><div class="w-msg">${esc(m)}</div>`;
+  const wl=document.getElementById('wList');wl.prepend(c);wl.scrollTop=0;
+  document.getElementById('wName').value='';document.getElementById('wMsg').value='';
+}
+</script>
+</body>
+</html>
